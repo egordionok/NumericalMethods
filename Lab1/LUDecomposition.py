@@ -51,7 +51,9 @@ def lu_dec(A):
             else:
                 L[i][j] = (A[i][j] - sum([L[i][k] * U[k][j] for k in range(j)])) / U[j][j]
 
+    print('Матрица L:')
     print(np.array(L))
+    print('Матрица U:')
     print(np.array(U))
     return L, U
 
@@ -67,6 +69,8 @@ def decision(arr):
     b = [arr[i][len(A[0])] for i in range(n)]
     L, U = lu_dec(A)
 
+
+
     # L * y  = b
     y = [0 for i in range(n)]
     for i in range(n):
@@ -79,6 +83,11 @@ def decision(arr):
 
     print(x)
     print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
+
+    det = 1
+    for i in range(L):
+        det *= L[i][i] * U[i][i]
+    print('Определитель:', )
 
     return x
 

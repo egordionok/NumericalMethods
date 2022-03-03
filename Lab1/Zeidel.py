@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.font as tkFont
 import numpy as np
 
+EPS = 0.00001
 
 def vector_norm(x):
     m = abs(x[0])
@@ -36,7 +37,7 @@ def SimpleIterations(arr):
     eps = 1
     n = 0
 
-    while eps >= 0.00001:
+    while eps >= EPS:
         x_last = x
         x = np.dot(alpha, x) + betta
         eps = vector_norm(x - x_last)
@@ -86,7 +87,7 @@ def Zeidel(arr):
     eps = 1
     n = 0
 
-    while eps >= 0.00001:
+    while eps >= EPS:
         x_last = x
 
         #   (E - B) * x(k + 1) = C * x(k) + betta | : (E - B)
@@ -101,6 +102,8 @@ def Zeidel(arr):
 
 
 def Calculate():
+    global EPS
+    EPS = float(entry_eps.get())
     arr = [list(map(float, i.split())) for i in table_coefs.get('1.0', tk.END).split('\n')]
 
     while (len(arr[len(arr) - 1])) == 0:
@@ -130,6 +133,7 @@ def Clean():
     table_coefs.delete('1.0', tk.END)
     entry_roots1.delete(0, tk.END)
     entry_roots2.delete(0, tk.END)
+    entry_eps.delete(0, tk.END)
     label_n1['text'] = ''
     label_n2['text'] = ''
 
@@ -140,14 +144,14 @@ window.title('Решение СЛАУ методом простых итерац
 font_arial = tkFont.Font(family="Arial", size=14)
 
 tk.Label(text="A|B =", font=font_arial).grid(row=0, column=0, sticky='e', pady=10, padx=10)
-table_coefs = tk.Text(width=21, height=10, font=font_arial)
+table_coefs = tk.Text(width=35, height=15, font=font_arial)
 table_coefs.grid(row=0, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="Метод простых итераций", font=font_arial).grid(row=1, column=0, columnspan=4, sticky='we', padx=10,
                                                               pady=10)
 
 tk.Label(text="x\U00002081, x\U00002082, ... :", font=font_arial).grid(row=2, column=0, sticky='e', padx=10, pady=10)
-entry_roots1 = tk.Entry(font=font_arial)
+entry_roots1 = tk.Entry(font=font_arial, width=35)
 entry_roots1.grid(row=2, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="Итераций:", font=font_arial).grid(row=3, column=0, sticky='e', padx=10, pady=10)
@@ -157,15 +161,27 @@ label_n1.grid(row=3, column=1, columnspan=3, sticky='w')
 tk.Label(text="Метод Зейделя", font=font_arial).grid(row=4, column=0, columnspan=4, sticky='we', padx=10, pady=10)
 
 tk.Label(text="x\U00002081, x\U00002082, ... :", font=font_arial).grid(row=5, column=0, sticky='e', padx=10, pady=10)
-entry_roots2 = tk.Entry(font=font_arial)
+entry_roots2 = tk.Entry(font=font_arial, width=35)
 entry_roots2.grid(row=5, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="Итераций:", font=font_arial).grid(row=6, column=0, sticky='e', padx=10, pady=10)
 label_n2 = tk.Label(font=font_arial)
 label_n2.grid(row=6, column=1, columnspan=3, sticky='w')
 
-tk.Button(text="Вычислить", command=Calculate, font=font_arial).grid(row=7, column=0, columnspan=2, pady=10, padx=10,
+tk.Label(text="Точность:", font=font_arial).grid(row=7, column=0, sticky='e', padx=10, pady=10)
+entry_eps = tk.Entry(font=font_arial, width=35)
+entry_eps.grid(row=7, column=1, columnspan=3, sticky='w')
+
+
+tk.Button(text="Вычислить", command=Calculate, font=font_arial).grid(row=8, column=0, columnspan=2, pady=10, padx=10,
                                                                      sticky='w')
-tk.Button(text="Очистить", command=Clean, font=font_arial).grid(row=7, column=3, padx=10, sticky='e')
+tk.Button(text="Очистить", command=Clean, font=font_arial).grid(row=8, column=3, padx=10, sticky='e')
 
 tk.mainloop()
+
+'''
+26 -9 -8 8 20
+9 -21 -2 8 -164
+-3 2 -18 8 140
+1 -6 -1 11 -81
+'''

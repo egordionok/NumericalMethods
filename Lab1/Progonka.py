@@ -1,3 +1,4 @@
+import math
 import tkinter as tk
 import tkinter.font as tkFont
 from scipy.linalg import solve_banded
@@ -61,7 +62,11 @@ def Progonka(arr):
     b.append(arr[-1][1])
     c.append(0)
     d.append(arr[-1][2])
-    
+
+    for i in range(n):
+        if math.fabs(b[i]) < math.fabs(a[i]) + math.fabs(c[i]):
+            raise Exception
+
     #   Формирование массивов P, Q (Расчет значений) ((Прямой ход))
 
     P, Q = [-c[0] / b[0]], [d[0] / b[0]]

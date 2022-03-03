@@ -46,6 +46,7 @@ def Calculate():
     arr, n, self_vectors = Rotation(arr, eps)
 
     print(self_vectors)
+    print()
     # print(arr)
     ans = ''
     for i in range(len(arr)):
@@ -69,15 +70,15 @@ window.title('Метод вращений для нахождения собст
 font_arial = tkFont.Font(family="Arial", size=14)
 
 tk.Label(text="A =", font=font_arial).grid(row=0, column=0, sticky='e', pady=10, padx=10)
-table_coefs = tk.Text(width=21, height=10, font=font_arial)
+table_coefs = tk.Text(width=30, height=10, font=font_arial)
 table_coefs.grid(row=0, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="eps =", font=font_arial).grid(row=1, column=0, sticky='e', pady=10, padx=10)
-table_eps = tk.Entry(font=font_arial)
+table_eps = tk.Entry(font=font_arial, width=30)
 table_eps.grid(row=1, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="λ\U00002081, λ\U00002082, ... :", font=font_arial).grid(row=5, column=0, sticky='e', padx=10, pady=10)
-entry_roots = tk.Entry(font=font_arial)
+entry_roots = tk.Entry(font=font_arial, width=30)
 entry_roots.grid(row=5, column=1, columnspan=3, sticky='w', padx=10)
 
 tk.Label(text="Итераций:", font=font_arial).grid(row=6, column=0, sticky='e', padx=10, pady=10)
