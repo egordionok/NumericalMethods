@@ -12,15 +12,10 @@ import numpy as np
 # b = [-12, -60, -91, -43]
 
 """
--1 -7 -2 -2
--8 1 -9 0
-8 2 -5 -3
--5 3 5 -9
-
--12
--60
--91
--43
+-1 -7 -3 -2 -12
+-8 1 -9 0 -60
+8 2 -5 -3 -91
+-5 3 5 -9 -43
 """
 
 # A = [
@@ -32,15 +27,10 @@ import numpy as np
 # b = [-51, 76, 26, -73]
 
 """
--4 -9 4 3
-2 7 9 8
-4 -4 0 -2
--8 5 2 9
-
--51
-76
-26
--73
+-4 -9 4 3 -51
+2 7 9 8 76
+4 -4 0 -2 26
+-8 5 2 9 -73
 """
 
 
@@ -66,14 +56,15 @@ def lu_dec(A):
     return L, U
 
 
-def decision(A, b):
+def decision(arr):
     """
     Решение СЛАУ методом LU разложения
-    :param A:
-    :param b:
+    :param arr: A|B
     :return x:
     """
+    A = [[arr[i][j] for j in range(len(arr[i]) - 1)] for i in range(len(arr))]
     n = len(A)
+    b = [arr[i][len(A[0])] for i in range(n)]
     L, U = lu_dec(A)
 
     # L * y  = b
@@ -87,17 +78,21 @@ def decision(A, b):
         x[i] = round((y[i] - sum([U[i][k] * x[k] for k in range(i + 1, n)])) / U[i][i], 4)
 
     print(x)
-    print(np.linalg.solve(A, b))
+    print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
 
     return x
 
 
 def Calculate():
-    a = [list(map(float, i.split())) for i in table_coefs.get('1.0', tk.END).split('\n') if len(i)]
-    b = [float(i) for i in table_b.get('1.0', tk.END).split('\n') if i != '']
+    arr = [list(map(float, i.split())) for i in table_coefs.get('1.0', tk.END).split('\n')]
+
+    while (len(arr[len(arr) - 1])) == 0:
+        arr.pop()
+
+    a = decision(arr)
 
     ans = ''
-    for i in decision(a, b):
+    for i in a:
         ans += str(round(i, 4)) + ' '
 
     entry_roots.delete(0, tk.END)
@@ -114,20 +109,15 @@ window.title('Решение СЛАУ с помощью LU разложения'
 
 font_arial = tkFont.Font(family="Arial", size=14)
 
-tk.Label(text="A =", font=font_arial).grid(row=0, column=0, sticky='e', pady=10, padx=10)
-table_coefs = tk.Text(width=21, height=10, font=font_arial)
+tk.Label(text="A|B =", font=font_arial).grid(row=0, column=0, sticky='e', pady=10, padx=10)
+table_coefs = tk.Text(width=30, height=10, font=font_arial)
 table_coefs.grid(row=0, column=1, columnspan=3, sticky='w', padx=10)
 
-tk.Label(text="b =", font=font_arial).grid(row=0, column=4, sticky='e', pady=10, padx=10)
-table_b = tk.Text(width=3, height=10, font=font_arial)
-table_b.grid(row=0, column=5, sticky='w', padx=10)
+tk.Label(text="x\U00002081, x\U00002082, ... :", font=font_arial).grid(row=5, column=0, sticky='e', padx=10, pady=10)
+entry_roots = tk.Entry(font=font_arial, width=30)
+entry_roots.grid(row=5, column=1, columnspan=3, sticky='w', padx=10)
 
-tk.Label(text="x\U00002081, x\U00002082, ... :", font=font_arial).grid(row=2, column=0, columnspan=2, sticky='e', padx=10, pady=10)
-entry_roots = tk.Entry(font=font_arial)
-entry_roots.grid(row=2, column=2, columnspan=3, sticky='w', padx=10)
-
-tk.Button(text="Вычислить", command=Calculate, font=font_arial).grid(row=4, column=0, columnspan=2, pady=10, padx=10, sticky='w')
-tk.Button(text="Очистить", command=Clean, font=font_arial).grid(row=4, column=3, padx=10, sticky='e')
-
+tk.Button(text="Вычислить", command=Calculate, font=font_arial).grid(row=7, column=0, columnspan=2, pady=10, padx=10, sticky='w')
+tk.Button(text="Очистить", command=Clean, font=font_arial).grid(row=7, column=3, padx=10, sticky='e')
 
 tk.mainloop()
