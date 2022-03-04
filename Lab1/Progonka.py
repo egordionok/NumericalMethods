@@ -41,7 +41,7 @@ for j in range(m):
         index = u + i - j
         if 0 <= index < u + l + 1:
             ab[index][j] = a[i][j]
-
+print('Проверка через внутренние библиотеки:')
 print(solve_banded((l, u), ab, b))
 
 
@@ -79,6 +79,11 @@ def Progonka(arr):
     x = [Q[n - 1]]
     for i in range(1, n):
         x.append(P[n - 1 - i] * x[i - 1] + Q[n - 1 - i])
+
+    print('P:')
+    print(np.array(P))
+    print('Q:')
+    print(np.array(Q))
 
     x = reversed(x)
     return x

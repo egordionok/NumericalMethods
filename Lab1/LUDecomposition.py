@@ -85,9 +85,9 @@ def decision(arr):
     print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
 
     det = 1
-    for i in range(L):
+    for i in range(n - 1):
         det *= L[i][i] * U[i][i]
-    print('Определитель:', )
+    print('Определитель:', det)
 
     return x
 
