@@ -51,25 +51,23 @@ def lu_dec(A):
             else:
                 L[i][j] = (A[i][j] - sum([L[i][k] * U[k][j] for k in range(j)])) / U[j][j]
 
-    print('Матрица L:')
-    print(np.array(L))
-    print('Матрица U:')
-    print(np.array(U))
     return L, U
 
 
-def decision(arr):
+def decision(arr, b=None):
     """
     Решение СЛАУ методом LU разложения
     :param arr: A|B
     :return x:
     """
-    A = [[arr[i][j] for j in range(len(arr[i]) - 1)] for i in range(len(arr))]
-    n = len(A)
-    b = [arr[i][len(A[0])] for i in range(n)]
+    n = len(arr)
+    if b is None:
+        A = [[arr[i][j] for j in range(len(arr[i]) - 1)] for i in range(len(arr))]
+        b = [arr[i][len(A[0])] for i in range(n)]
+    else:
+        A = arr
+
     L, U = lu_dec(A)
-
-
 
     # L * y  = b
     y = [0 for i in range(n)]
@@ -81,15 +79,26 @@ def decision(arr):
     for i in range(n - 1, -1, -1):
         x[i] = round((y[i] - sum([U[i][k] * x[k] for k in range(i + 1, n)])) / U[i][i], 4)
 
-    print(x)
-    print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
-
-    det = 1
-    for i in range(n - 1):
-        det *= L[i][i] * U[i][i]
-    print('Определитель:', det)
-
     return x
+
+
+def inverse_matrix(arr):
+    A = arr
+    n = len(A)
+    L, U = lu_dec(A)
+    I = np.eye(n)
+
+    Y = []
+    for i in range(n):
+        Y.append(decision(L, I[:, i]))
+
+    Y = np.array(Y).T
+    X = []
+
+    for i in range(n):
+        X.append(decision(U, Y[:, i]))
+
+    return np.array(X).T
 
 
 def Calculate():
@@ -98,7 +107,31 @@ def Calculate():
     while (len(arr[len(arr) - 1])) == 0:
         arr.pop()
 
+    A = [[arr[i][j] for j in range(len(arr[i]) - 1)] for i in range(len(arr))]
+    b = [arr[i][len(A[0])] for i in range(len(arr))]
+
     a = decision(arr)
+    IA = inverse_matrix(A)
+
+    L, U = lu_dec(A)
+
+    print('Матрица L:')
+    print(np.array(L))
+    print('Матрица U:')
+    print(np.array(U))
+
+    print('Обратная матрица:')
+    print(IA)
+    print('Обратная матрица через встроенные библиотеки:')
+    print(np.linalg.inv(np.array(A)))
+
+    print(a)
+    print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
+
+    det = 1
+    for i in range(len(A) - 1):
+        det *= L[i][i] * U[i][i]
+    print('Определитель:', det)
 
     ans = ''
     for i in a:
