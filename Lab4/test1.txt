@@ -1,0 +1,5 @@
+2*y + 4*x*x*exp(x*x)
+3 0
+[0;1]
+0.1
+exp(x*x) + exp(x * sqrt(2)) + exp(-x * sqrt(2))
