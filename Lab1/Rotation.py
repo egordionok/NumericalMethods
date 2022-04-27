@@ -11,7 +11,6 @@ def Rotation(arr, eps=0.1):
     self_vectors = np.eye(len(A))
     while iterator < 1000000:
         iterator += 1
-        # print(f"_________________ it {iterator} _________________")
         max_a = max([[math.fabs(A[i][j]), i, j] for i in range(n) for j in range(n) if i != j], key=lambda x: x[0])
 
         my_round = lambda x: round(x, 4)
@@ -26,9 +25,6 @@ def Rotation(arr, eps=0.1):
         self_vectors = np.dot(self_vectors, U)
 
         A = np.dot(np.dot(U.T, A), U)
-        # print(A.round(2))
-        # print()
-        # print(U.round(2))
 
         if math.sqrt(sum([A[i][j]**2 for i in range(n) for j in range(i + 1, n)])) < eps:
             break

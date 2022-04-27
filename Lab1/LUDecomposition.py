@@ -125,7 +125,7 @@ def Calculate():
     print('Обратная матрица через встроенные библиотеки:')
     print(np.linalg.inv(np.array(A)))
 
-    print(a)
+    print('Решение системы:', a)
     print('Проверка через встроенные библиотеки:', np.linalg.solve(A, b))
 
     det = 1
